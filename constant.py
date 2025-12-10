@@ -1,3 +1,7 @@
+import RPi.GPIO as GPIO
+import pigpio as pig
+import time 
+
 patterns = {
     (0,1,1,1,1,1,1,1):1,
     (0,0,1,1,1,1,1,1):2,

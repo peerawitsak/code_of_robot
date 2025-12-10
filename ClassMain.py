@@ -1,8 +1,4 @@
-from constan import *
-
-import RPi.GPIO as GPIO
-import pigpio as pig
-import time 
+from constant import *
 
 #----------------------------------function ----------------------------------------
 
@@ -192,92 +188,7 @@ class Robot():
 # rb = Robot(Kp,Ki,Kd,Speed,Target) #สร้าง object
 
 
-######################## การเดินหลัก ######################
-"""
-def Forward_Until_Black(i,leftspeed,rightspeed):#เดินหน้าจนกว่าจะเจอเส้นดำ 1;ทั้งเส้น 2;ดำขวา 3;ดำซ้าย 
-    while rb.black_line != i : # หยุดตอนเจอ เส้นดำ 1ครั้ง
-        rb.Track_forward(leftspeed,rightspeed)
-    while rb.black_line == i :# เดินจนกว่าจะไม่เจอเส้น
-        rb.Track_forward(leftspeed,rightspeed)
-    # time.sleep(Time_delay)
-    #delay ให้ เกินเส้นดำ
-    
-def Start_TO_Box():#วิ่งจากstartไปเก็บกล่อง
-     Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-     Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
 
-def Box_To_Left():#วิ่งหลังจากเก็บกล่องแล้วไปทางซ้าย
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    rb.Turn_left()
-    Forward_Until_Black(2)#เจอเส้นดำขวา
-    rb.Turn_Right()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-
-def Box_To_Right():#วิ่งหลังจากเก็บกล่องแล้วไปทางขวา
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    rb.Turn_Right()
-    Forward_Until_Black(3) #เจอเส้นดำซ้าย
-    rb.Turn_left()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-
-def Box_To_Mid():#วิ่งหลังจากเก็บกล่องแล้วตรงไปขึ้นสะพาน
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    #สำหรับขึ้นสะพาน
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    
-def Left_TO_Right():#วิ่งจากซ้ายหลังวางกล่องแล้วไปขวา
-    rb.UTurn()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(3)#เจอเส้นซ้าย
-    rb.Turn_Left()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(3)#เจอเส้นซ้าย
-    rb.Turn_Left()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-
-def Right_TO_Left():#วิ่งจากขวาหลังวางกล่องแล้วไปซ้าย
-    rb.UTurn()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(2)#เจอเส้นซ้าย
-    rb.Turn_Right()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(2)#เจอเส้นซ้าย
-    rb.Turn_Right()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-
-def Left_To_Start():#วิ่งจากซ้ายกลับไปจุดstart
-    rb.UTurn()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(3)#เจอเส้นซ้าย
-    rb.Turn_Left()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    rb.Turn_Right()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น
-
-def Right_To_Start():#วิ่งจากขวากลับไปจุดstart
-    rb.UTurn()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-    Forward_Until_Black(2)#เจอเส้นซ้าย
-    rb.Turn_Right()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น
-    rb.Turn_Left()
-    Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
-"""
 
 
 
