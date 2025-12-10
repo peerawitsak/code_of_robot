@@ -84,21 +84,21 @@ class Robot():
         self.leftspeed = left_speed_motor
         self.rightspeed = right_speed_motor
 
-    def Track_forward(self,left,right):#เดินไปข้างหน้าด้วยการ tag แบบ pid
+    def Track_forward(self,mod_speed=0):#เดินไปข้างหน้าด้วยการ tag แบบ pid
         self.update()
-        pwm_b.ChangeDutyCycle(self.rightspeed+right)
+        pwm_b.ChangeDutyCycle(self.rightspeed+mod_speed)
         GPIO.output(front_right,1) 
         GPIO.output(back_right,0)
-        pwm_a.ChangeDutyCycle(self.leftspeed+left)
+        pwm_a.ChangeDutyCycle(self.leftspeed+mod_speed)
         GPIO.output(front_left,1)
         GPIO.output(back_left,0)
 
-    def Track_backward(self,left,right):#ส่งค่าความเร็วขวาซ้ายสลับกัน
+    def Track_backward(self,mod_speed=0):#ส่งค่าความเร็วขวาซ้ายสลับกัน
         self.update()
-        pwm_b.ChangeDutyCycle(self.leftspeed+left)
+        pwm_b.ChangeDutyCycle(self.leftspeed+mod_speed)
         GPIO.output(front_right,0) 
         GPIO.output(back_right,1)
-        pwm_a.ChangeDutyCycle(self.rightspeed+right)
+        pwm_a.ChangeDutyCycle(self.rightspeed+mod_speed)
         GPIO.output(front_left,0)
         GPIO.output(back_left,1)
         
@@ -111,8 +111,8 @@ class Robot():
         GPIO.output(front_left,0)
         GPIO.output(back_left,0)
     
-    def Turn_Right(self,speed):
-        while self.Backposition != 2:
+    def Turn_Right(self,speed=30):
+        while self.Backposition != 3:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
             GPIO.output(front_right,0) 
@@ -120,7 +120,7 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,1)
             GPIO.output(back_left,0)
-        while self.Backposition != 3:
+        while self.Backposition != 4:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
             GPIO.output(front_right,0) 
@@ -130,8 +130,8 @@ class Robot():
             GPIO.output(back_left,0)
         self.motor_stop()
     
-    def Turn_Left(self,speed):
-        while self.Backposition != 1:
+    def Turn_Left(self,speed=30):
+        while self.Backposition != 2:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
             GPIO.output(front_right,1) 
@@ -139,7 +139,7 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,0)
             GPIO.output(back_left,1)
-        while self.Backposition != 3:
+        while self.Backposition != 4:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
             GPIO.output(front_right,1) 
@@ -149,8 +149,16 @@ class Robot():
             GPIO.output(back_left,1)
         self.motor_stop()
         
-    def UTurn(self,speed):
-        while self.Backposition != 2:
+    def UTurn(self,speed=30):
+        while self.Backposition != 3:
+            self.update()
+            pwm_a.ChangeDutyCycle(speed)
+            GPIO.output(front_right,0) 
+            GPIO.output(back_right,1)
+            pwm_b.ChangeDutyCycle(speed)
+            GPIO.output(front_left,1)
+            GPIO.output(back_left,0)
+        while self.Backposition != 4:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
             GPIO.output(front_right,0) 
@@ -166,15 +174,7 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,1)
             GPIO.output(back_left,0)
-        while self.Backposition != 2:
-            self.update()
-            pwm_a.ChangeDutyCycle(speed)
-            GPIO.output(front_right,0) 
-            GPIO.output(back_right,1)
-            pwm_b.ChangeDutyCycle(speed)
-            GPIO.output(front_left,1)
-            GPIO.output(back_left,0)
-        while self.Backposition != 3:
+        while self.Backposition != 4:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
             GPIO.output(front_right,0) 
@@ -185,7 +185,7 @@ class Robot():
         self.motor_stop()
     
 
-# rb = Robot(Kp,Ki,Kd,Speed,Target) #สร้าง object
+# rb = Robot(Kp,Ki,Kd,Speed,Target) #สร้าง object ไปแล้วใน set up 
 
 
 

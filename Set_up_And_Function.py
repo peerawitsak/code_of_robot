@@ -39,13 +39,11 @@ pwm_b.start(0) #start with 0% dutycycle
 rb = Robot(Kp,Ki,Kd,Speed,Target)
 #--------------------------function ---------------------------------
 
-def Forward_Until_Black(i,leftspeed=0,rightspeed=0):#เดินหน้าจนกว่าจะเจอเส้นดำ 1;ทั้งเส้น 2;ดำขวา 3;ดำซ้าย 
+def Forward_Until_Black(i,mod_speed=0):#เดินหน้าจนกว่าจะเจอเส้นดำ 1;ทั้งเส้น 2;ดำขวา 3;ดำซ้าย 
     while rb.black_line != i : # หยุดตอนเจอ เส้นดำ 1ครั้ง
-        rb.Track_forward(leftspeed,rightspeed)
+        rb.Track_forward(mod_speed)
     while rb.black_line == i :# เดินจนกว่าจะไม่เจอเส้น
-        rb.Track_forward(leftspeed,rightspeed)
-    # time.sleep(Time_delay)
-    #delay ให้ เกินเส้นดำ
+        rb.Track_forward(mod_speed)
     
 def Start_TO_Box():#วิ่งจากstartไปเก็บกล่อง
      Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
