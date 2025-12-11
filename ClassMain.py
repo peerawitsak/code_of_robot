@@ -49,6 +49,9 @@ class Robot():
         
         self._error = self.position-self.target
         
+        with open(file_path, 'a+') as file:
+            file.write(f"senval = {SenVal} position ={self.position} ,back senval = {BackSenval} position = {self.Backposition}\n")
+            
         self.PID_cal()
     # คำนวณ PID vale # x = error ; error = position - target
     def PID_cal(self):
@@ -84,23 +87,31 @@ class Robot():
         self.leftspeed = left_speed_motor
         self.rightspeed = right_speed_motor
 
+########################### main control #################################
+
     def Track_forward(self,mod_speed=0):#เดินไปข้างหน้าด้วยการ tag แบบ pid
         self.update()
+        print(self.position)#######
+        print(self.Backposition)####
         pwm_b.ChangeDutyCycle(self.rightspeed+mod_speed)
         GPIO.output(front_right,1) 
         GPIO.output(back_right,0)
         pwm_a.ChangeDutyCycle(self.leftspeed+mod_speed)
         GPIO.output(front_left,1)
         GPIO.output(back_left,0)
+        time.sleep(0.05)
 
     def Track_backward(self,mod_speed=0):#ส่งค่าความเร็วขวาซ้ายสลับกัน
         self.update()
+        print(self.position)#######
+        print(self.Backposition)####
         pwm_b.ChangeDutyCycle(self.leftspeed+mod_speed)
         GPIO.output(front_right,0) 
         GPIO.output(back_right,1)
         pwm_a.ChangeDutyCycle(self.rightspeed+mod_speed)
         GPIO.output(front_left,0)
         GPIO.output(back_left,1)
+        time.sleep(0.05)
         
     def motor_stop(self):#หยุดการทำงาน motor
         self.update()
@@ -110,6 +121,7 @@ class Robot():
         pwm_a.ChangeDutyCycle(0)
         GPIO.output(front_left,0)
         GPIO.output(back_left,0)
+        time.sleep(0.05)
     
     def Turn_Right(self,speed=30):
         while self.Backposition != 3:
@@ -120,6 +132,8 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,1)
             GPIO.output(back_left,0)
+            time.sleep(0.05)
+            
         while self.Backposition != 4:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
@@ -128,6 +142,8 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,1)
             GPIO.output(back_left,0)
+            time.sleep(0.05)
+            
         self.motor_stop()
     
     def Turn_Left(self,speed=30):
@@ -139,6 +155,8 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,0)
             GPIO.output(back_left,1)
+            time.sleep(0.05)
+            
         while self.Backposition != 4:
             self.update()
             pwm_a.ChangeDutyCycle(speed)
@@ -147,43 +165,22 @@ class Robot():
             pwm_b.ChangeDutyCycle(speed)
             GPIO.output(front_left,0)
             GPIO.output(back_left,1)
+            time.sleep(0.05)
+            
         self.motor_stop()
         
     def UTurn(self,speed=30):
-        while self.Backposition != 3:
-            self.update()
-            pwm_a.ChangeDutyCycle(speed)
-            GPIO.output(front_right,0) 
-            GPIO.output(back_right,1)
-            pwm_b.ChangeDutyCycle(speed)
-            GPIO.output(front_left,1)
-            GPIO.output(back_left,0)
-        while self.Backposition != 4:
-            self.update()
-            pwm_a.ChangeDutyCycle(speed)
-            GPIO.output(front_right,0) 
-            GPIO.output(back_right,1)
-            pwm_b.ChangeDutyCycle(speed)
-            GPIO.output(front_left,1)
-            GPIO.output(back_left,0)
-        while self.Backposition != 3:
-            self.update()
-            pwm_a.ChangeDutyCycle(speed)
-            GPIO.output(front_right,0) 
-            GPIO.output(back_right,1)
-            pwm_b.ChangeDutyCycle(speed)
-            GPIO.output(front_left,1)
-            GPIO.output(back_left,0)
-        while self.Backposition != 4:
-            self.update()
-            pwm_a.ChangeDutyCycle(speed)
-            GPIO.output(front_right,0) 
-            GPIO.output(back_right,1)
-            pwm_b.ChangeDutyCycle(speed)
-            GPIO.output(front_left,1)
-            GPIO.output(back_left,0)
-        self.motor_stop()
+        self.Turn_Right()
+        self.Turn_Right()
+        
+################################# function #################################################
     
+    def Backward_Until_black(self,i,mod_speed=0):
+        while self.Backposition != i:
+            self.Track_backward(mod_speed)
+        while self.Backposition == i:
+            self.Track_backward(mod_speed)
+
     def Forward_Until_Black(self,i,mod_speed=0):#เดินหน้าจนกว่าจะเจอเส้นดำ 1;ทั้งเส้น 2;ดำขวา 3;ดำซ้าย 
         while self.black_line != i : # หยุดตอนเจอ เส้นดำ 1ครั้ง
             self.Track_forward(mod_speed)

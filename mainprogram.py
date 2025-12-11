@@ -8,9 +8,9 @@ print("serial is OK")
 
 
 if GPIO.input(button)==1:
-    time.sleep(60) #รอ 1 นาทีก่อนทำงาน
     rb.Forward_Until_Black(1)
     rb.motor_stop()
+
 #-------------------------- Loop ----------------------------------
     try :
         while True:
@@ -22,6 +22,7 @@ if GPIO.input(button)==1:
                         data = ser.readline().decode('utf-8')
                         print(data)
                         print(type(data))
+                        
             except KeyboardInterrupt :
                 print("stop ")
                 rb.motor_stop()

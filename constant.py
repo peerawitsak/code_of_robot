@@ -35,6 +35,8 @@ patterns_Back={
     (1,1):4
 }
 
+file_path = "logfile.txt"
+
 # senser avg
 # avgBlack = 200
 # avgGreen = 600
@@ -105,5 +107,5 @@ front_left = 19 #35
 back_left  = 26 #37
 
 #comunication pin
-Tx = 14 #ขาส่ง
-Rx = 15 #ขารับ
+# Tx = 14 #ขาส่ง
+# Rx = 15 #ขารับ
