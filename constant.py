@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import pigpio as pig
+import serial
 import time 
 
 patterns = {
@@ -102,3 +103,7 @@ back_right = 16 #36
 pwm_a = 20 #38
 front_left = 19 #35
 back_left  = 26 #37
+
+#comunication pin
+Tx = 14 #ขาส่ง
+Rx = 15 #ขารับ

@@ -184,8 +184,91 @@ class Robot():
             GPIO.output(back_left,0)
         self.motor_stop()
     
+    def Forward_Until_Black(self,i,mod_speed=0):#เดินหน้าจนกว่าจะเจอเส้นดำ 1;ทั้งเส้น 2;ดำขวา 3;ดำซ้าย 
+        while self.black_line != i : # หยุดตอนเจอ เส้นดำ 1ครั้ง
+            self.Track_forward(mod_speed)
+        while self.black_line == i :# เดินจนกว่าจะไม่เจอเส้น
+            self.Track_forward(mod_speed)
+    
+    def Start_TO_Box(self):#วิ่งจากstartไปเก็บกล่อง
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น
 
-# rb = Robot(Kp,Ki,Kd,Speed,Target) #สร้าง object ไปแล้วใน set up 
+    def Box_To_Left(self):#วิ่งหลังจากเก็บกล่องแล้วไปทางซ้าย
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Turn_left()
+        self.Forward_Until_Black(2)#เจอเส้นดำขวา
+        self.Turn_Right()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+
+    def Box_To_Right(self):#วิ่งหลังจากเก็บกล่องแล้วไปทางขวา
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Turn_Right()
+        self.Forward_Until_Black(3) #เจอเส้นดำซ้าย
+        self.Turn_left()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+
+    def Box_To_Mid(self):#วิ่งหลังจากเก็บกล่องแล้วตรงไปขึ้นสะพาน
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        #สำหรับขึ้นสะพาน
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        
+    def Left_TO_Right(self):#วิ่งจากซ้ายหลังวางกล่องแล้วไปขวา
+        self.UTurn()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(3)#เจอเส้นซ้าย
+        self.Turn_Left()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(3)#เจอเส้นซ้าย
+        self.Turn_Left()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+
+    def Right_TO_Left(self):#วิ่งจากขวาหลังวางกล่องแล้วไปซ้าย
+        self.UTurn()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(2)#เจอเส้นซ้าย
+        self.Turn_Right()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(2)#เจอเส้นซ้าย
+        self.Turn_Right()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+
+    def Left_To_Start(self):#วิ่งจากซ้ายกลับไปจุดstart
+        self.UTurn()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(3)#เจอเส้นซ้าย
+        self.Turn_Left()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Turn_Right()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น
+
+    def Right_To_Start(self):#วิ่งจากขวากลับไปจุดstart
+        self.UTurn()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Forward_Until_Black(2)#เจอเส้นซ้าย
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+        self.Turn_Right()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น
+        self.Turn_Left()
+        self.Forward_Until_Black(1)#เจอเส้นดำทั้งเส้น 
+
+
+
+    # rb = Robot(Kp,Ki,Kd,Speed,Target) #สร้าง object ไปแล้วใน set up 
 
 
 
